@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.shpun</groupId>
+  <artifactId>user-frontend</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+        <version>1.8.0</version>
+        <executions>
+          <!-- 检查是否安装node npm -->
+          <execution>
+            <id>install node and npm</id>
+            <goals>
+              <goal>install-node-and-npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+          </execution>
+          <!-- 安装rimraf -->
+          <execution>
+            <id>npm install rimraf</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <arguments>install rimraf --registry=https://registry.npm.taobao.org</arguments>
+            </configuration>
+          </execution>
+          <!-- 执行脚本，删除node_modules和package-lock.json -->
+          <execution>
+            <id>npm run clean</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <arguments>run clean</arguments>
+            </configuration>
+          </execution>
+          <!-- npm install -->
+          <execution>
+            <id>npm install</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <arguments>install --registry=https://registry.npm.taobao.org</arguments>
+            </configuration>
+          </execution>
+          <!-- build 之后复制文件到 src/main/resource/static 下 -->
+          <execution>
+            <id>npm run build</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <arguments>run build-copy</arguments>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <nodeVersion>v10.16.3</nodeVersion>
+          <npmVersion>6.11.3</npmVersion>
+          <!-- node安装路径 -->
+          <installDirectory>${settings.localRepository}</installDirectory>
+          <!-- 前端代码路径 -->
+          <workingDirectory>${basedir}</workingDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
